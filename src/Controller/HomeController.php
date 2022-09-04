@@ -17,4 +17,14 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    /**
+     * @Route("/gains", name="earnings")
+     */
+    public function earnings(): Response
+    {
+        return $this->render('home/earnings.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }
