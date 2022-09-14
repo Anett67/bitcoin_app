@@ -9,13 +9,14 @@
     <hr class="header-border">
     <div class="page-content">
         {{ form_start(registrationForm) }}
-            {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.plainPassword, {
-                label: 'Password'
-            }) }}
-            {{ form_row(registrationForm.agreeTerms) }}
-
-            <button type="submit" class="btn">Register</button>
+            <div class="form-inputs">
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+                {{ form_row(registrationForm.agreeTerms) }}
+            </div>
+            <button type="submit" class="form-submit">Créer un compte</button>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}
