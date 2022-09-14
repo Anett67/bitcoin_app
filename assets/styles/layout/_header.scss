@@ -1,0 +1,18 @@
+header {
+    width: 100%;
+
+    .site-logo {
+        margin-left: 10px;
+        min-width: 150px;
+        width: 30%;
+    }
+}
+
+.header-border {
+    background-color: $grey;
+    border: 0;
+    height: .2px;
+    margin: 0;
+    opacity: .5;
+    width: 100%;
+}

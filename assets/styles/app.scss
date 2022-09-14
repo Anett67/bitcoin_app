@@ -1,3 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
+@import './utils/variables';
+@import './utils/font-face';
+@import './layout/base';
+@import './layout/header';
 @import './component/form';
 
