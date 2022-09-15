@@ -11,10 +11,7 @@
         {{ form_start(registrationForm) }}
             <div class="form-inputs">
                 {{ form_row(registrationForm.email) }}
-                {{ form_row(registrationForm.plainPassword, {
-                    label: 'Password'
-                }) }}
-                {{ form_row(registrationForm.agreeTerms) }}
+                {{ form_row(registrationForm.plainPassword) }}
             </div>
             <button type="submit" class="form-submit">Créer un compte</button>
         {{ form_end(registrationForm) }}
