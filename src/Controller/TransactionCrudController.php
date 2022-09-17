@@ -18,6 +18,10 @@ class TransactionCrudController extends AbstractController
      */
     public function createEditTransaction(Transaction $id = null, Request $request, EntityManagerInterface $manager): Response
     {
+        if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('transaction_crud/createEditTransaction.html.twig', [
             'page_title' => $id ? 'Mise à jour de la transaction' : 'Ajouter une transaction',
         ]);
@@ -28,6 +32,10 @@ class TransactionCrudController extends AbstractController
      */
     public function deleteTransaction(Transaction $id, Request $request, EntityManagerInterface $manager): Response
     {
+        if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('transaction_crud/deleteTransaction.html.twig', [
             'controller_name' => 'TransactionCrudController',
         ]);

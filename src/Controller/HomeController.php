@@ -13,6 +13,10 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
+        if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
@@ -23,6 +27,10 @@ class HomeController extends AbstractController
      */
     public function earnings(): Response
     {
+        if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('home/earnings.html.twig', [
             'controller_name' => 'HomeController',
         ]);
