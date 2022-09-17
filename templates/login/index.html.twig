@@ -15,7 +15,7 @@
             <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
         <form action="{{ path('app_login') }}" method="post">
-            <div class="form-inputs">
+            <div class="form-inputs login-form">
                 <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Email"/>
 
                 <input type="password" id="password" name="_password" placeholder="Mot de passe"/>
@@ -28,6 +28,9 @@
 
             <button class="form-submit" type="submit">Se connecter</button>
         </form>
+        <div class="auth-nav-link">
+            <a href="{{ path('app_register') }}">Créer un compte</a>
+        </div>
     </div>
 
 {% endblock %}

@@ -9,11 +9,14 @@
     <hr class="header-border">
     <div class="page-content">
         {{ form_start(registrationForm) }}
-            <div class="form-inputs">
+            <div class="form-inputs registration-form">
                 {{ form_row(registrationForm.email) }}
                 {{ form_row(registrationForm.plainPassword) }}
             </div>
             <button type="submit" class="form-submit">Créer un compte</button>
         {{ form_end(registrationForm) }}
+        <div class="auth-nav-link">
+            <a href="{{ path('app_login') }}">Se connecter</a>
+        </div>
     </div>
 {% endblock %}
