@@ -1,0 +1,19 @@
+.total-earnings {
+    background-image: url('../../images/bg.png');
+    background-size: cover;
+    background-position: center;
+    height: 150px;
+    position: relative;
+    width: 100%;
+
+    .total-earnings-link {
+        color: #fff;
+        font-family: 'RobotoBold';
+        font-size: 36px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+    }
+}
+
