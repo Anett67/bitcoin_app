@@ -13,7 +13,6 @@ form {
         border-radius: 4px;
         color: white;
         height: 40px;
-        margin-bottom: 30px;
         padding-left: 10px;
         width: 100%;
     }
@@ -22,5 +21,24 @@ form {
         display: flex;
         flex-direction: column;
         width: 100%;
+
+        .input-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-icon {
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            position: absolute;
+            width: 15px;
+        }
+
+        .crypto-form-input {
+            color: #fff;
+            font-size: 14px;
+            padding-left: 50px;
+        }
     }
 }

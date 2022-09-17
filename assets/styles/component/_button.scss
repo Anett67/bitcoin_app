@@ -1,9 +1,15 @@
 .form-submit {
+    background-color: #ffff;
     border: 0;
     border-radius: 4px;
+    color: $black;
     font-family: 'RobotoBold';
     font-size: 16px;
     text-transform: uppercase;
     padding: 15px 20px;
     width: 75%;
+
+    &:disabled {
+        background-color: $light-grey;
+    }
 }
