@@ -14,23 +14,35 @@ class TransactionCrudController extends AbstractController
 {
     /**
      * @Route("/nouveau", name="create_transaction")
-     * @Route("/modification/{id}", name="edit_transaction", requirements={"id":"\d+"})
      */
-    public function createEditTransaction(Transaction $id = null, Request $request, EntityManagerInterface $manager): Response
+    public function createTransaction(Request $request, EntityManagerInterface $manager): Response
     {
         if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
             return $this->redirectToRoute('app_login');
         }
 
         return $this->render('transaction_crud/createEditTransaction.html.twig', [
-            'page_title' => $id ? 'Mise à jour de la transaction' : 'Ajouter une transaction',
+            'page_title' => 'Ajouter une transaction',
+        ]);
+    }
+    /**
+     * @Route("/modification", name="edit_transaction")
+     */
+    public function editTransaction(Request $request, EntityManagerInterface $manager): Response
+    {
+        if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('transaction_crud/createEditTransaction.html.twig', [
+            'page_title' => 'Ajouter un montant',
         ]);
     }
 
     /**
-     * @Route("/supprimer/{id}", name="delete_transaction", requirements={"id":"\d+"})
+     * @Route("/supprimer", name="delete_transaction")
      */
-    public function deleteTransaction(Transaction $id, Request $request, EntityManagerInterface $manager): Response
+    public function deleteTransaction(Request $request, EntityManagerInterface $manager): Response
     {
         if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
             return $this->redirectToRoute('app_login');

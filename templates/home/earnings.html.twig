@@ -3,5 +3,10 @@
 {% block title %}Historique des gains{% endblock %}
 
 {% block body %}
-
+    <header class="p-3 text-center form-header">
+        <a href="{{ path('dashboard') }}"><img src="{{ asset('build/images/cancel.png') }}" class="close" alt="Close"></a>
+        <h2 class="page-title text-center">Vos gains</h2>
+    </header>
+    <hr class="header-border">
+    <div class="page-content"></div>
 {% endblock %}
