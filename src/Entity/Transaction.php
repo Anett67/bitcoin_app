@@ -33,7 +33,7 @@ class Transaction
     private $price;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
      */
     private $earnings;
 

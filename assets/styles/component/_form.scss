@@ -14,7 +14,7 @@ form {
         border-radius: 4px;
         color: white;
         height: 40px;
-        padding-left: 10px;
+        padding-left: 40px;
         width: 100%;
     }
 
@@ -31,6 +31,10 @@ form {
         .input-group {
             margin-bottom: 30px;
             position: relative;
+
+            & > div {
+                width: 100%;
+            }
         }
 
         .form-icon {
