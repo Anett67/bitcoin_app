@@ -14,7 +14,12 @@
 
                 <div class="input-group">
                     <img src="{{ asset('build/images/search.png') }}" class="form-icon" alt="Recherche de crypto">
-                    <input type="text" id="crypto" name="crypto" class="crypto-form-input" placeholder="Sélectionner une crypto"/>
+                    <select id="crypto" name="crypto" class="crypto-form-input">
+                        <option value="">Sélectionner une crypto</option>
+                        {% for crypto in crypto_listing %}
+                            <option value="{{ crypto.id }}">{{ crypto.symbol }} ({{ crypto.name }})</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 
                 <div class="input-group">

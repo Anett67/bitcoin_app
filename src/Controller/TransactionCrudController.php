@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Transaction;
+use App\Repository\CryptoRepository;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,7 @@ class TransactionCrudController extends AbstractController
     /**
      * @Route("/nouveau", name="create_transaction")
      */
-    public function createTransaction(Request $request, EntityManagerInterface $manager): Response
+    public function createTransaction(Request $request, EntityManagerInterface $manager, CryptoRepository $cryptoRepository): Response
     {
         if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
             return $this->redirectToRoute('app_login');
@@ -24,6 +25,7 @@ class TransactionCrudController extends AbstractController
         return $this->render('transaction_crud/createEditTransaction.html.twig', [
             'page_title' => 'Ajouter une transaction',
             'action' => 'create', 
+            'crypto_listing' => $cryptoRepository->findAll(),
         ]);
     }
     /**
