@@ -48,19 +48,10 @@ class Transaction
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToOne(targetEntity=Crypto::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $symbol;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $logo;
+    private $crypto;
 
     public function getId(): ?int
     {
@@ -75,18 +66,6 @@ class Transaction
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getCrypto(): ?Crypto
-    {
-        return $this->crypto;
-    }
-
-    public function setCrypto(?Crypto $crypto): self
-    {
-        $this->crypto = $crypto;
 
         return $this;
     }
@@ -151,38 +130,14 @@ class Transaction
         return $this;
     }
 
-    public function getName(): ?string
+    public function getCrypto(): ?Crypto
     {
-        return $this->name;
+        return $this->crypto;
     }
 
-    public function setName(string $name): self
+    public function setCrypto(Crypto $crypto): self
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSymbol(): ?string
-    {
-        return $this->symbol;
-    }
-
-    public function setSymbol(string $symbol): self
-    {
-        $this->symbol = $symbol;
-
-        return $this;
-    }
-
-    public function getLogo(): ?string
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(?string $logo): self
-    {
-        $this->logo = $logo;
+        $this->crypto = $crypto;
 
         return $this;
     }
