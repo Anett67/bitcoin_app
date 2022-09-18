@@ -1,0 +1,19 @@
+.transactions-list {
+    width: 100%;
+
+    .transaction {
+        border-bottom: 1px solid $grey;
+    }
+
+    .transaction,
+    .transaction .left-section {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 5px;
+
+        img {
+            margin-right: 10px;
+        }
+    }
+}

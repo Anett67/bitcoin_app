@@ -14,8 +14,25 @@
     <div class="total-earnings">
         <a class="total-earnings-link" href="{{ path('earnings') }}">{{ earnings }} €</a>
     </div>
-    <div class="page-content">
-        <div class="auth-nav-link">
+    <div class="page-content dashboard">
+        <div class="transactions-list">
+            {% for transaction in transactions %}
+                <div class="transaction">
+                    <div class="left-section">
+                        <img src="{{ asset('build/images/' ~ transaction.crypto.logo ~ '') }}" alt="{{ transaction.crypto.symbol }}">
+                        <div>
+                            <span class="crypto-symbol">{{ transaction.crypto.symbol }}</span> 
+                            <span class="crypto-name">({{ transaction.crypto.name }})</span>
+                        </div>
+                    </div>
+                    <div class="trend">
+                        <img src="{{ asset('build/images/arrow.png') }}" alt="Trend icon">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="auth-nav-link dashboard">
             <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
     </div>

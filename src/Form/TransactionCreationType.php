@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Crypto;
 use App\Entity\Transaction;
+use App\Repository\CryptoRepository;
+use App\Repository\TransactionRepository;
 use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

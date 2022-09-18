@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use DateTimeImmutable;
 use App\Entity\Transaction;
-use App\Repository\CryptoRepository;
 use App\Form\TransactionCreationType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
