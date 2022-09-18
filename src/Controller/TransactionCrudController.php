@@ -23,6 +23,7 @@ class TransactionCrudController extends AbstractController
 
         return $this->render('transaction_crud/createEditTransaction.html.twig', [
             'page_title' => 'Ajouter une transaction',
+            'action' => 'create', 
         ]);
     }
     /**
@@ -36,6 +37,7 @@ class TransactionCrudController extends AbstractController
 
         return $this->render('transaction_crud/createEditTransaction.html.twig', [
             'page_title' => 'Ajouter un montant',
+            'action' => 'edit',
         ]);
     }
 
