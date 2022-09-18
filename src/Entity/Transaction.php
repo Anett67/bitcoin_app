@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
@@ -140,5 +141,23 @@ class Transaction
         $this->crypto = $crypto;
 
         return $this;
+    }
+
+    public function getTrend()
+    {
+        if($this->earnings === 0) return 0;
+
+        // Calculates earnings in percentage
+        $gains = ($this->earnings / $this->price) * 100;
+
+        if($gains > 10) {
+            return 2;
+        }
+
+        if($this->earnings < 0) {
+            return -1;
+        }
+
+        return 1;
     }
 }

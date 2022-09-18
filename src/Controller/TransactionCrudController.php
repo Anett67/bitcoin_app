@@ -34,6 +34,7 @@ class TransactionCrudController extends AbstractController
             $transaction->setUser($this->getUser());
             $transaction->setUpdatedAt(new DateTimeImmutable());
             $transaction->setPrice($quantity * $unit_price);
+            $transaction->setEarnings(0);
             $manager->persist($transaction);
             $manager->flush();
 

@@ -25,9 +25,13 @@
                             <span class="crypto-name">({{ transaction.crypto.name }})</span>
                         </div>
                     </div>
-                    <div class="trend">
+                    {% if transaction.getTrend == 2 %}
+                        <img src="{{ asset('build/images/double_arrow.png') }}" alt="Trend icon">
+                    {% elseif transaction.getTrend == -1 %}
+                        <img src="{{ asset('build/images/arrow_down.png') }}" alt="Trend icon">
+                    {% elseif transaction.getTrend == 1 %}
                         <img src="{{ asset('build/images/arrow.png') }}" alt="Trend icon">
-                    </div>
+                    {% endif %}                
                 </div>
             {% endfor %}
         </div>
