@@ -9,23 +9,18 @@
     </header>
     <hr class="header-border">
     <div class="page-content">
-        <form action="" method="post">
+        {{ form_start(form) }}
             <div class="form-inputs">
-
                 <div class="input-group">
                     <img src="{{ asset('build/images/search.png') }}" class="form-icon" alt="Recherche de crypto">
-                    <input type="text" id="crypto" name="crypto" class="crypto-form-input" placeholder="Sélectionner une crypto"/>
+                    {{ form_row(form.crypto) }}
                 </div>
-                
                 <div class="input-group">
                     <img src="{{ asset('build/images/quantity.png') }}" class="form-icon" alt="Quantité">
-                    <input type="number" id="quantity" name="quantity" class="crypto-form-input" placeholder="Quantité"/>
+                    {{ form_row(form.quantity) }}
                 </div>
-                
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_amount') }}">
             </div>
-
-            <button class="form-submit" disabled type="submit">Valider</button>
-        </form>
+            <button class="form-submit" type="submit">Ajouter</button>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

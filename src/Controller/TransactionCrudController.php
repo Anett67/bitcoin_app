@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use DateTimeImmutable;
 use App\Entity\Transaction;
+use App\Form\TransactionDeleteType;
 use App\Form\TransactionEditionType;
 use App\Form\TransactionCreationType;
-use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,14 +66,38 @@ class TransactionCrudController extends AbstractController
     /**
      * @Route("/supprimer", name="delete_transaction")
      */
-    public function deleteTransaction(Request $request, EntityManagerInterface $manager): Response
+    public function deleteTransaction(Request $request, EntityManagerInterface $manager, TransactionRepository $transactionRepository): Response
     {
         if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
             return $this->redirectToRoute('app_login');
         }
 
+        $transaction = new Transaction();
+        $transactionForm = $this->createForm(TransactionDeleteType::class, $transaction);
+
+        if($transactionForm->isSubmitted() && $transactionForm->isValid()){
+            $quantity = $transactionForm->get('quantity')->getData();
+
+            if ($transactionToEdit = $transactionRepository->findOneBy([
+                'user' => $this->getUser(), 
+                'crypto' => $transactionForm->get('crypto')->getData()
+            ])) {
+                // TODO: Error if less than 0
+                $transactionToEdit->setQuantity($transactionToEdit->getQuantity() - $quantity);
+                // TODO: calculate price
+                $transactionToEdit->setUpdatedAt(new DateTimeImmutable());
+                $manager->persist($transactionToEdit);
+                $manager->flush();
+
+                return $this->redirectToRoute('dashboard');
+            }
+            
+            return $this->redirectToRoute('dashboard');
+        }
+
         return $this->render('transaction_crud/deleteTransaction.html.twig', [
             'controller_name' => 'TransactionCrudController',
+            'form' => $transactionForm->createView()
         ]);
     }
 }
