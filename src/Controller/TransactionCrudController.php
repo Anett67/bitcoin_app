@@ -74,17 +74,27 @@ class TransactionCrudController extends AbstractController
 
         $transaction = new Transaction();
         $transactionForm = $this->createForm(TransactionDeleteType::class, $transaction);
+        $transactionForm->handleRequest($request);
 
         if($transactionForm->isSubmitted() && $transactionForm->isValid()){
             $quantity = $transactionForm->get('quantity')->getData();
+            // TODO: get price from API
+            $price = 100;
 
             if ($transactionToEdit = $transactionRepository->findOneBy([
                 'user' => $this->getUser(), 
                 'crypto' => $transactionForm->get('crypto')->getData()
             ])) {
                 // TODO: Error if less than 0
-                $transactionToEdit->setQuantity($transactionToEdit->getQuantity() - $quantity);
-                // TODO: calculate price
+                $new_quantity = $transactionToEdit->getQuantity() - $quantity;
+                if($new_quantity === 0) {
+                    $manager->remove($transactionToEdit);
+                    $manager->flush();
+                    return $this->redirectToRoute('dashboard');
+
+                };
+                $transactionToEdit->setQuantity($new_quantity);
+                $transactionToEdit->setPrice($transactionToEdit->getPrice() - ($quantity * $price));
                 $transactionToEdit->setUpdatedAt(new DateTimeImmutable());
                 $manager->persist($transactionToEdit);
                 $manager->flush();
