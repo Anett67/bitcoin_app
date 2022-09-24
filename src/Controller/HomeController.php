@@ -19,7 +19,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        dd($crypto->getCryptoData());
+        // dd($crypto->getCryptoData());
 
         return $this->render('home/index.html.twig', [
             'earnings' => 0,

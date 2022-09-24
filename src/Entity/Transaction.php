@@ -50,7 +50,7 @@ class Transaction
 
     /**
      * @ORM\OneToOne(targetEntity=Crypto::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $crypto;
 
@@ -136,7 +136,7 @@ class Transaction
         return $this->crypto;
     }
 
-    public function setCrypto(Crypto $crypto): self
+    public function setCrypto(Crypto $crypto = null): self
     {
         $this->crypto = $crypto;
 

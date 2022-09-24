@@ -88,6 +88,7 @@ class TransactionCrudController extends AbstractController
                 // TODO: Error if less than 0
                 $new_quantity = $transactionToEdit->getQuantity() - $quantity;
                 if($new_quantity === 0) {
+                    $transactionToEdit->setCrypto(null);
                     $manager->remove($transactionToEdit);
                     $manager->flush();
                     return $this->redirectToRoute('dashboard');
