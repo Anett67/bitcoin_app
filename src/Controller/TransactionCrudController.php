@@ -91,7 +91,6 @@ class TransactionCrudController extends AbstractController
                     $manager->remove($transactionToEdit);
                     $manager->flush();
                     return $this->redirectToRoute('dashboard');
-
                 };
                 $transactionToEdit->setQuantity($new_quantity);
                 $transactionToEdit->setPrice($transactionToEdit->getPrice() - ($quantity * $price));
