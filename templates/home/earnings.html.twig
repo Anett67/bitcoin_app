@@ -8,5 +8,7 @@
         <h2 class="page-title text-center">Vos gains</h2>
     </header>
     <hr class="header-border">
-    <div class="page-content"></div>
+    <div class="page-content">
+        {{ render_chart(chart, {'class': 'earnings-chart'}) }}
+    </div>
 {% endblock %}

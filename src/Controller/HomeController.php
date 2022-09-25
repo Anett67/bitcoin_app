@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Repository\TotalEarningsRepository;
-use App\Service\Crypto;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 use App\Repository\TransactionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,14 +30,45 @@ class HomeController extends AbstractController
     /**
      * @Route("/gains", name="earnings")
      */
-    public function earnings(): Response
+    public function earnings(ChartBuilderInterface $chartBuilder, TotalEarningsRepository $totalEarningsRepository): Response
     {
         if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
             return $this->redirectToRoute('app_login');
         }
 
+        $earnings = $totalEarningsRepository->findBy(['user' => $this->getUser()]);
+
+        $data = [];
+
+        foreach ($earnings as $earning) {
+            $data[] = $earning->getAmount();
+        }
+
+        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart->setData([
+            'labels' => ['January', 'February', 'March', 'April', 'May'],
+            'datasets' => [
+                [
+                    'label' => 'Historique des gains',
+                    'backgroundColor' => 'rgb(31, 195, 108)',
+                    'borderColor' => 'rgb(31, 195, 108)',
+                    'data' => $data,
+                ],
+            ],
+            'options' => [
+                'scales' => [
+                    'y' => [
+                        'title' => [
+                            'display' => true,
+                            'text' => '€'
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
         return $this->render('home/earnings.html.twig', [
-            'controller_name' => 'HomeController',
+            'chart' => $chart,
         ]);
     }
 }
