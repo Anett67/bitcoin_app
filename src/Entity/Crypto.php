@@ -32,6 +32,11 @@ class Crypto
      */
     private $logo;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $last_price;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Crypto
     public function setLogo(?string $logo): self
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getLastPrice(): ?float
+    {
+        return $this->last_price;
+    }
+
+    public function setLastPrice(?float $last_price): self
+    {
+        $this->last_price = $last_price;
 
         return $this;
     }

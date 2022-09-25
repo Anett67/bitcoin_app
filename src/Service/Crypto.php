@@ -2,16 +2,31 @@
 namespace App\Service;
 
 use App\Repository\CryptoRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Crypto 
 {
     private $cryptoRepository;
 
-    public function __construct(CryptoRepository $cryptoRepository)
+    private $userRepository;
+
+    private $manager;
+
+    public function __construct(
+        CryptoRepository $cryptoRepository, 
+        UserRepository $userRepository,
+        EntityManagerInterface $manager
+    )
     {
         $this->cryptoRepository = $cryptoRepository;
+        $this->userRepository = $userRepository;
+        $this->manager = $manager;
     }
 
+    /**
+     * Returns data of all cryptocurrencies saved in database from coinmarket API 
+     */
     public function getCryptoData($symbols = null) 
     {
         if(!$symbols) {
@@ -20,7 +35,8 @@ class Crypto
 
         $url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest';
         $parameters = [
-            "symbol" => $symbols
+            "symbol" => $symbols,
+            "convert" => 'EUR'
         ];
 
         $headers = [
@@ -46,6 +62,9 @@ class Crypto
         return $response->data;
     }
     
+    /**
+     * Returns the list of the symbols of all cryptocurrencies in database
+     */
     public function getSymbolList() 
     {
         $crypto_listing = $this->cryptoRepository->findAll();
@@ -57,5 +76,31 @@ class Crypto
         }
 
         return implode(',', $symbols);
+    }
+
+    /**
+     * Updates lat price of each crypto in database
+     */
+    public function updateCryptoPrices()
+    {
+        $data = $this->getCryptoData();
+
+        foreach ($data as $crypto) {
+            $symbol = $crypto->symbol;
+            $price = round($crypto->quote->EUR->price, 2);
+            $crypto_to_update = $this->cryptoRepository->findOneBy(['symbol' => $symbol]);
+            $crypto_to_update->setLastPrice($price);
+            $this->manager->persist($crypto_to_update);
+        }
+        
+        $this->manager->flush();
+    }
+
+    /**
+     * Calculates users current earnings on all of his active transactions
+     */
+    public function calculateEarnings()
+    {
+        
     }
 }
