@@ -89,13 +89,17 @@ class TransactionCrudController extends AbstractController
                 'user' => $this->getUser(), 
                 'crypto' => $transactionForm->get('crypto')->getData()
             ])) {
-                // TODO: Error if less than 0
+                $new_quantity = $transactionToEdit->getQuantity() - $quantity;
+                if($new_quantity < 0) {
+                    $this->addFlash('success', 'Vous ne disposez pas de ce montant de cette crypto-monnaie. Vous pouvez supprimer un maximum de 6.'  . $transactionToEdit->getQuantity() .'.');
+                    return $this->redirectToRoute('dashboard');
+                }
                 $new_quantity = $transactionToEdit->getQuantity() - $quantity;
                 if($new_quantity === 0) {
                     $transactionToEdit->setCrypto(null);
                     $manager->remove($transactionToEdit);
                     $manager->flush();
-                    $this->addFlash('success', 'Le montant a bien été supprimé.');
+                    $this->addFlash('success', 'La transaction a bien été supprimé.');
                     return $this->redirectToRoute('dashboard');
                 };
                 $transactionToEdit->setQuantity($new_quantity);

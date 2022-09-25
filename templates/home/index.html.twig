@@ -19,6 +19,9 @@
         {% for message in app.flashes('success') %}
             <div class="flash-success">{{ message }}</div>
         {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="flash-success">{{ message }}</div>
+        {% endfor %}
         <div class="transactions-list">
             {% for transaction in transactions %}
                 <div class="transaction">
