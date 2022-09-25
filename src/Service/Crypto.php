@@ -1,8 +1,11 @@
 <?php
 namespace App\Service;
 
+use App\Entity\TotalEarnings;
 use App\Repository\CryptoRepository;
+use App\Repository\TotalEarningsRepository;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Crypto 
@@ -11,16 +14,20 @@ class Crypto
 
     private $userRepository;
 
+    private $earningsRepository;
+
     private $manager;
 
     public function __construct(
         CryptoRepository $cryptoRepository, 
         UserRepository $userRepository,
+        TotalEarningsRepository $totalEarningsRepository,
         EntityManagerInterface $manager
     )
     {
         $this->cryptoRepository = $cryptoRepository;
         $this->userRepository = $userRepository;
+        $this->earningsRepository = $totalEarningsRepository;
         $this->manager = $manager;
     }
 
@@ -101,6 +108,32 @@ class Crypto
      */
     public function calculateEarnings()
     {
-        
+        $users = $this->userRepository->findAll();
+
+        foreach ($users as $user) {
+            $transactions = $user->getTransactions();
+
+            if (count($transactions) === 0) {
+                continue;
+            }
+
+            $earnings_on_transactions = [];
+
+            foreach ($transactions as $transaction) {
+                $paid_price = $transaction->getQuantity() * $transaction->getPrice();
+                $current_value = $transaction->getQuantity() * $transaction->getCrypto()->getLastPrice();
+                
+                $earnings_on_transactions[] = $current_value - $paid_price;
+
+            }
+
+            $earnings = new TotalEarnings();
+            $earnings->setUser($user);
+            $earnings->setCreatedAt(new DateTimeImmutable('now'));
+            $earnings->setAmount(strval(array_sum($earnings_on_transactions)));
+
+            $this->manager->persist($earnings);
+            $this->manager->flush();
+        }
     }
 }
