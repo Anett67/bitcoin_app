@@ -57,7 +57,7 @@ class TransactionCrudController extends AbstractController
             $manager->persist($transaction);
             $manager->flush();
 
-            $this->addFlash('success', 'La trasaction a bien été ajouté.');
+            $this->addFlash('success', 'La transaction a bien été ajouté.');
             return $this->redirectToRoute('dashboard');
         }
 
@@ -91,7 +91,7 @@ class TransactionCrudController extends AbstractController
             ])) {
                 $new_quantity = $transactionToEdit->getQuantity() - $quantity;
                 if($new_quantity < 0) {
-                    $this->addFlash('success', 'Vous ne disposez pas de ce montant de cette crypto-monnaie. Vous pouvez supprimer un maximum de 6.'  . $transactionToEdit->getQuantity() .'.');
+                    $this->addFlash('error', 'Vous ne disposez pas de ce montant de cette crypto-monnaie. Vous pouvez supprimer un maximum de 6.'  . $transactionToEdit->getQuantity() .'.');
                     return $this->redirectToRoute('dashboard');
                 }
                 $new_quantity = $transactionToEdit->getQuantity() - $quantity;
@@ -109,6 +109,9 @@ class TransactionCrudController extends AbstractController
                 $manager->flush();
 
                 $this->addFlash('success', 'Le montant a bien été supprimé.');
+                return $this->redirectToRoute('dashboard');
+            }else {
+                $this->addFlash('error', 'Vous n\'avez pas de transaction avec cette crypto-monnaie.');
                 return $this->redirectToRoute('dashboard');
             }
             

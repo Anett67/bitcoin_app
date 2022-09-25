@@ -21,8 +21,10 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $totalEarnings = $totalEarningsRepository->findOneBy(['user' => $this->getUser()], ['createdAt' => 'DESC']);
+
         return $this->render('home/index.html.twig', [
-            'earnings' => $totalEarningsRepository->findOneBy(['user' => $this->getUser()], ['createdAt' => 'DESC'])->getAmount(),
+            'earnings' => $totalEarnings ? $totalEarnings->getAmount() : 0,
             'transactions' => $transactionRepository->findBy(['user' => $this->getUser()])
         ]);
     }

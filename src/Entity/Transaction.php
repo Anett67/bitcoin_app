@@ -49,7 +49,7 @@ class Transaction
     private $updatedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=Crypto::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Crypto::class, inversedBy="transactions")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $crypto;
