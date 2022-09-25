@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Crypto;
 use DateTimeImmutable;
 use App\Entity\Transaction;
 use App\Form\TransactionDeleteType;
@@ -9,6 +10,7 @@ use App\Form\TransactionEditionType;
 use App\Form\TransactionCreationType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\TransactionRepository;
+use App\Service\Crypto as ServiceCrypto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,7 +68,7 @@ class TransactionCrudController extends AbstractController
     /**
      * @Route("/supprimer", name="delete_transaction")
      */
-    public function deleteTransaction(Request $request, EntityManagerInterface $manager, TransactionRepository $transactionRepository): Response
+    public function deleteTransaction(Request $request, EntityManagerInterface $manager, ServiceCrypto $crypto, TransactionRepository $transactionRepository): Response
     {
         if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
             return $this->redirectToRoute('app_login');
@@ -78,8 +80,8 @@ class TransactionCrudController extends AbstractController
 
         if($transactionForm->isSubmitted() && $transactionForm->isValid()){
             $quantity = $transactionForm->get('quantity')->getData();
-            // TODO: get price from API
-            $price = 100;
+            $crypto->updateCryptoPrices();
+            $price = $transaction->getCrypto()->getLastPrice();
 
             if ($transactionToEdit = $transactionRepository->findOneBy([
                 'user' => $this->getUser(), 
