@@ -7,6 +7,7 @@ use App\Entity\Transaction;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType as TypeIntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,7 +25,7 @@ class TransactionCreationType extends AbstractType
                 'label' => false,
                 'attr' => ['placeholder' => "Quantité"]
             ])
-            ->add('price', TypeIntegerType::class ,[
+            ->add('price', NumberType::class ,[
                 'label' => false,
                 'attr' => ['placeholder' => 'Prix d\'achat']
             ])

@@ -45,6 +45,7 @@ class TransactionCrudController extends AbstractController
                 $manager->persist($transactionToEdit);
                 $manager->flush();
 
+                $this->addFlash('success', 'Le montant a bien été ajouté.');
                 return $this->redirectToRoute('dashboard');
             }
 
@@ -56,6 +57,7 @@ class TransactionCrudController extends AbstractController
             $manager->persist($transaction);
             $manager->flush();
 
+            $this->addFlash('success', 'La trasaction a bien été ajouté.');
             return $this->redirectToRoute('dashboard');
         }
 
@@ -93,6 +95,7 @@ class TransactionCrudController extends AbstractController
                     $transactionToEdit->setCrypto(null);
                     $manager->remove($transactionToEdit);
                     $manager->flush();
+                    $this->addFlash('success', 'Le montant a bien été supprimé.');
                     return $this->redirectToRoute('dashboard');
                 };
                 $transactionToEdit->setQuantity($new_quantity);
@@ -101,6 +104,7 @@ class TransactionCrudController extends AbstractController
                 $manager->persist($transactionToEdit);
                 $manager->flush();
 
+                $this->addFlash('success', 'Le montant a bien été supprimé.');
                 return $this->redirectToRoute('dashboard');
             }
             

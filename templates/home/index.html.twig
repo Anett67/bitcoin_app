@@ -15,6 +15,10 @@
         <a class="total-earnings-link" href="{{ path('earnings') }}">{{ earnings }} €</a>
     </div>
     <div class="page-content dashboard">
+        <!-- Flash messages -->
+        {% for message in app.flashes('success') %}
+            <div class="flash-success">{{ message }}</div>
+        {% endfor %}
         <div class="transactions-list">
             {% for transaction in transactions %}
                 <div class="transaction">
