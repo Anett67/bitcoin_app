@@ -65,16 +65,6 @@ class HomeController extends AbstractController
                     'borderColor' => 'rgb(31, 195, 108)',
                     'data' => array_reverse($data),
                 ],
-            ],
-            'options' => [
-                'scales' => [
-                    'y' => [
-                        'title' => [
-                            'display' => true,
-                            'text' => '€'
-                        ]
-                    ]
-                ]
             ]
         ]);
 
