@@ -38,23 +38,32 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $earnings = $totalEarningsRepository->findBy(['user' => $this->getUser()]);
+        $earnings = $totalEarningsRepository->findBy(['user' => $this->getUser()], ['createdAt' => 'DESC'], 30);
 
         $data = [];
+        $labels = [];
 
+        foreach ($earnings as $key => $earning) {
+            if(intval($key) % 5 === 0) {
+                $labels[] = $earning->getCreatedAt()->format('d/m/Y');
+                continue;
+            }
+            $labels[] = '';
+        }
+        
         foreach ($earnings as $earning) {
             $data[] = $earning->getAmount();
         }
 
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May'],
+            'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Historique des gains',
+                    'label' => 'Historique des gains (derniers 30 jours)',
                     'backgroundColor' => 'rgb(31, 195, 108)',
                     'borderColor' => 'rgb(31, 195, 108)',
-                    'data' => $data,
+                    'data' => array_reverse($data),
                 ],
             ],
             'options' => [
