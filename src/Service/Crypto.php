@@ -122,8 +122,12 @@ class Crypto
             foreach ($transactions as $transaction) {
                 $paid_price = $transaction->getQuantity() * $transaction->getPrice();
                 $current_value = $transaction->getQuantity() * $transaction->getCrypto()->getLastPrice();
+                $earning_on_transaction = $current_value - $paid_price;
+
+                $transaction->setEarnings($earning_on_transaction);
+                $this->manager->persist($transaction);
                 
-                $earnings_on_transactions[] = $current_value - $paid_price;
+                $earnings_on_transactions[] = $earning_on_transaction;
 
             }
 
