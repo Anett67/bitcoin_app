@@ -8,7 +8,6 @@ class HomeControllerTest extends WebTestCase
 {
     public function testDashboardPageRedirects() 
     {
-        self::ensureKernelShutdown();
         $client = static::createClient();
         $client->request('GET', '/');
         $this->assertSame(302, $client->getResponse()->getStatusCode());
