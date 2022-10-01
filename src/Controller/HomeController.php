@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use function PHPUnit\Framework\callback;
+
 class HomeController extends AbstractController
 {
     /**
@@ -43,11 +45,7 @@ class HomeController extends AbstractController
         $data = [];
         $labels = [];
 
-        foreach ($earnings as $key => $earning) {
-            if(intval($key) % 5 === 0) {
-                $labels[] = $earning->getCreatedAt()->format('d/m/Y');
-                continue;
-            }
+        for ($i = 0; $i < count($earnings); $i++) {
             $labels[] = '';
         }
         
@@ -60,11 +58,57 @@ class HomeController extends AbstractController
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Historique des gains (derniers 30 jours)',
+                    'label' => 'Historique des gains (30 jours)',
                     'backgroundColor' => 'rgb(31, 195, 108)',
                     'borderColor' => 'rgb(31, 195, 108)',
                     'data' => array_reverse($data),
+                ]
+            ]
+        ]);
+        $chart->setOptions([
+            'elements' => [
+                'line' => [
+                    'tension' => '0.5'
                 ],
+                'point' => [
+                    'pointStyle' => 'line',
+                    'borderWidth' => 0
+                ],
+            ],
+            'plugins' => [
+                'legend' => [
+                    'display' => false,
+                ]
+            ],
+            'scales' => [
+                'y' => [
+                    'title' => [
+                        'display' => true,
+                        'text' => '€',
+                        'color' => 'rgb(255,255,255)'
+                    ],
+                    'ticks' => [
+                        'display' => false
+                    ],
+                    'grid' => [
+                        'borderColor' => 'rgb(255,255,255)'
+                    ]
+                ],
+                'x' => [
+                    'position' => 'center',
+                    'title' => [
+                        'display' => true,
+                        'text' => 'date',
+                        'align' => 'end',
+                        'color' => 'rgb(255,255,255)'
+                    ],
+                    'ticks' => [
+                        'display' => false
+                    ],
+                    'grid' => [
+                        'borderColor' => 'rgb(255,255,255)'
+                    ]
+                ]
             ]
         ]);
 
