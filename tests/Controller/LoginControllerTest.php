@@ -12,7 +12,6 @@ class LoginControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/connexion');
         $this->assertSame(200, $client->getResponse()->getStatusCode());
-        echo $client->getResponse()->getContent();
     }
 
 	public function testLoginPage()
@@ -34,9 +33,21 @@ class LoginControllerTest extends WebTestCase
         // simulate $testUser being logged in
         $client->loginUser($testUser);
 
-        // test e.g. the profile page
         $client->request('GET', '/');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('a.total-earnings-link', '-25 €');
+    }
+
+    public function testLoginError()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/connexion');
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
+        
+        $form = $crawler->selectButton("Se connecter")->form();
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+        $this->assertSame(1, $crawler->filter('html:contains("Identifiants invalides.")')->count());
     }
 }

@@ -66,3 +66,7 @@ DirectoryIndex index.php
 </IfModule>
 
 RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^cryptotracker.anettdavid\.fr [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://www.cryptotracker.anettdavid.fr/$1 [R,L]

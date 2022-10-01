@@ -2,9 +2,6 @@
 
 namespace App\Command;
 
-use App\Repository\CryptoRepository;
-use App\Repository\TotalEarningsRepository;
-use App\Repository\UserRepository;
 use App\Service\Crypto;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
