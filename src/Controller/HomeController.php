@@ -2,26 +2,30 @@
 
 namespace App\Controller;
 
-use App\Repository\TotalEarningsRepository;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use App\Service\Crypto;
 use Symfony\UX\Chartjs\Model\Chart;
+use function PHPUnit\Framework\callback;
 use App\Repository\TransactionRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TotalEarningsRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 
-use function PHPUnit\Framework\callback;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="dashboard")
      */
-    public function index(TransactionRepository $transactionRepository, TotalEarningsRepository $totalEarningsRepository): Response
+    public function index(TransactionRepository $transactionRepository, TotalEarningsRepository $totalEarningsRepository, Crypto $crypto): Response
     {
         if(!$this->isGranted('IS_AUTHENTICATED_FULLY')){
             return $this->redirectToRoute('app_login');
         }
+
+        $crypto->updateCryptoPrices();
+        $crypto->calculateEarnings();
 
         $totalEarnings = $totalEarningsRepository->findOneBy(['user' => $this->getUser()], ['createdAt' => 'DESC']);
 
