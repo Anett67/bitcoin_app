@@ -57,4 +57,39 @@ class HomeControllerTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('div.transaction')->count());
         $this->assertSelectorTextSame('div.transaction .crypto-symbol', 'ETC');
     }
+
+    public function testEditLinkIsNotShown()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('test@mail.fr');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+
+        $this->assertSelectorNotExists('.edit-transaction');
+    }
+
+    public function testCryptoFormIsShown()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('johndoe@mail.fr');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+
+        $client->request('GET', '/supprimer');
+        $this->assertSelectorExists('form[name="transaction_delete"]');
+    }
 }
