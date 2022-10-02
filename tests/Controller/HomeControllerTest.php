@@ -86,10 +86,28 @@ class HomeControllerTest extends WebTestCase
         // simulate $testUser being logged in
         $client->loginUser($testUser);
 
-        $client->request('GET', '/');
-        $this->assertResponseIsSuccessful();
-
         $client->request('GET', '/supprimer');
         $this->assertSelectorExists('form[name="transaction_delete"]');
+    }
+
+    public function testAmountDeletion()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('johndoe@mail.fr');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        $crawler = $client->request('GET', '/supprimer');
+
+        $form = $crawler->selectButton("Valider")->form();
+        $form["transaction_delete[quantity]"] = 2;
+
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+        $this->assertSame(1, $crawler->filter("html:contains('Le montant a bien été supprimé.')")->count());
     }
 }
