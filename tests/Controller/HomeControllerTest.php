@@ -38,4 +38,23 @@ class HomeControllerTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('html:contains("Vos gains")')->count());
         $this->assertSelectorExists('canvas');
     }
+
+    public function testDashboardCryptoListIsShown()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('johndoe@mail.fr');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        $crawler = $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+
+        $this->assertSelectorExists('.transactions-list');
+        $this->assertSame(1, $crawler->filter('div.transaction')->count());
+        $this->assertSelectorTextSame('div.transaction .crypto-symbol', 'ETC');
+    }
 }
