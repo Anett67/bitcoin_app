@@ -110,4 +110,28 @@ class HomeControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
         $this->assertSame(1, $crawler->filter("html:contains('Le montant a bien été supprimé.')")->count());
     }
+
+    public function testAddTransaction()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('johndoe@mail.fr');
+
+        // simulate $testUser being logged in
+        $client->loginUser($testUser);
+
+        $crawler = $client->request('GET', '/nouveau');
+
+        $form = $crawler->selectButton("Ajouter")->form();
+        $form["transaction_creation[crypto]"] = "6";
+        $form["transaction_creation[quantity]"] = 3;
+        $form["transaction_creation[price]"] = 0.8;
+
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+        $this->assertSame(1, $crawler->filter("html:contains('La transaction a bien été ajouté.')")->count());
+        $this->assertSame(2, $crawler->filter('div.transaction')->count());
+    }
 }
