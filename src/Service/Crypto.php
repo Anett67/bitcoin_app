@@ -113,28 +113,28 @@ class Crypto
         foreach ($users as $user) {
             $transactions = $user->getTransactions();
 
-            if (count($transactions) === 0) {
-                continue;
-            }
+            $earnings = new TotalEarnings();
+            $earnings->setUser($user);
 
-            $earnings_on_transactions = [];
+            $earnings_on_transactions = 0;
 
             foreach ($transactions as $transaction) {
-                $paid_price = $transaction->getQuantity() * $transaction->getPrice();
+                $paid_price = $transaction->getPrice();
                 $current_value = $transaction->getQuantity() * $transaction->getCrypto()->getLastPrice();
                 $earning_on_transaction = $current_value - $paid_price;
 
                 $transaction->setEarnings($earning_on_transaction);
                 $this->manager->persist($transaction);
                 
-                $earnings_on_transactions[] = $earning_on_transaction;
-
+                $earnings_on_transactions += $earning_on_transaction;
             }
 
-            $earnings = new TotalEarnings();
-            $earnings->setUser($user);
             $earnings->setCreatedAt(new DateTimeImmutable('now'));
-            $earnings->setAmount(strval(array_sum($earnings_on_transactions)));
+            if (count($transactions) === 0) {
+                $earnings->setAmount(0);
+            } else {
+                $earnings->setAmount($earnings_on_transactions);
+            }
 
             $this->manager->persist($earnings);
             $this->manager->flush();
