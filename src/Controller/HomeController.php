@@ -25,7 +25,7 @@ class HomeController extends AbstractController
         }
 
         $crypto->updateCryptoPrices();
-        $crypto->calculateEarnings();
+        $crypto->calculateEarnings($this->getUser());
 
         $totalEarnings = $totalEarningsRepository->findOneBy(['user' => $this->getUser()], ['createdAt' => 'DESC']);
 

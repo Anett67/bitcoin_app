@@ -106,9 +106,9 @@ class Crypto
     /**
      * Calculates users current earnings on all of his active transactions
      */
-    public function calculateEarnings()
+    public function calculateEarnings($user = null)
     {
-        $users = $this->userRepository->findAll();
+        $users = $user ? [$user] : $this->userRepository->findAll();
 
         foreach ($users as $user) {
             $transactions = $user->getTransactions();
